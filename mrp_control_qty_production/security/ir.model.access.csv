@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_mrp_control_qty_production_mrp_control_qty_production,mrp_control_qty_production.mrp_control_qty_production,model_mrp_control_qty_production_mrp_control_qty_production,base.group_user,1,1,1,1
