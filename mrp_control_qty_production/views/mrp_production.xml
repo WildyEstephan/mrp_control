@@ -8,7 +8,7 @@
         <field name="arch" type="xml">
 
             <xpath expr="//button[@name='button_mark_done']" position="after">
-                <field name="use_history_control"/>
+                <field name="use_history_control" invisible="1"/>
                 <button name="create_history" 
                         attrs="{'invisible': [('use_history_control', '=', False)]}" 
                         string="Produce QTY" type="object" class="oe_highlight"/>
@@ -16,10 +16,16 @@
 
             <xpath expr="//field[@name='qty_producing']" position="replace">
                 <field name="qty_producing" class="text-left" readonly="1"/>
+                /
             </xpath>
 
-            <xpath expr="//field[@name='move_byproduct_ids']/tree/field[@name='product_uom_qty']" position="replace">
-                <field name="product_uom_qty" string="To Produce" readonly="1"/>
+<!--            <xpath expr="//field[@name='move_byproduct_ids']/tree/field[@name='product_uom_qty']" position="replace">-->
+<!--                <field name="product_uom_qty" readonly="1"/>-->
+<!--            </xpath>-->
+
+            <xpath expr="//button[@name='action_show_details']" position="replace">
+                <field name="no_history_control" invisible="1"/>
+                <button name="action_show_details" type="object" icon="fa-list" attrs="{'invisible': ['|', '|',('has_tracking', '=','none'), ('show_details_visible', '=', False), ('no_history_control', '=', True)]}" options="{&quot;warn&quot;: true}"/>
             </xpath>
 
             <xpath expr="//page[@name='miscellaneous']" position="before">
@@ -38,6 +44,8 @@
                     </field>
                 </page>
             </xpath>
+
+
 
         </field>
     </record>

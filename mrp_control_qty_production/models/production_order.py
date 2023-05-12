@@ -66,7 +66,7 @@ class Production(models.Model):
                     'product_id': product.product_id.id,
                     'uom_id': product.product_uom.id,
                     'date': now,
-                    'qty_producing': product.product_uom_qty,
+                    'qty_producing': product.quantity_done,
                     'stock_move_id': product.id
                 }
             ))

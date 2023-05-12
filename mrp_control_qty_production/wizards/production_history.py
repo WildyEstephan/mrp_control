@@ -41,9 +41,21 @@ class ProductionHistory(models.TransientModel):
         self.create_control_history()
 
         byproducts = self.line_ids.filtered(lambda r: not r.is_main_product)
-        
+
         for byproduct in byproducts:
-            byproduct.stock_move_id.product_uom_qty += byproduct.product_uom_qty
+            if byproduct.stock_move_id.move_line_ids:
+                byproduct.stock_move_id.move_line_ids[0].qty_done += byproduct.product_uom_qty
+            else:
+                move_line = byproduct.stock_move_id.move_line_ids.create({
+                    'product_id': byproduct.stock_move_id.product_id.id,
+                    'production_id': self.production_id.id,
+                    'move_id': byproduct.stock_move_id.id,
+                    'location_id': byproduct.stock_move_id.location_id.id,
+                    'location_dest_id': byproduct.stock_move_id.location_dest_id.id,
+                    'company_id': byproduct.stock_move_id.company_id.id,
+                    'qty_done': byproduct.product_uom_qty,
+                    'product_uom_id': byproduct.stock_move_id.product_uom.id
+                })
 
         if self.line_ids.filtered(lambda r: r.is_main_product):
             main_product = self.line_ids.filtered(lambda r: r.is_main_product)[0]

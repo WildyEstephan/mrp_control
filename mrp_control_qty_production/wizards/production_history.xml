@@ -16,7 +16,7 @@
                     </p>
 
                     <field name="line_ids">
-                        <tree editable="bottom" decoration-primary="is_main_product==True">
+                        <tree editable="bottom" decoration-primary="is_main_product==True" create="false">
                             <field name="product_id" readonly="1"/>
                             <field name="qty_producing" readonly="1"/>
                             <field name="product_uom_qty"/>
