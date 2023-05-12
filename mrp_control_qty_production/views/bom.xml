@@ -1,0 +1,23 @@
+<odoo>
+
+    <!-- Inherit Form View to Modify it -->
+    <record id="mrp_bom_form_view_inherit_bom" model="ir.ui.view">
+        <field name="name">mrp_bom_form_view_inherit_bom</field>
+        <field name="model">mrp.bom</field>
+        <field name="inherit_id" ref="mrp.mrp_bom_form_view"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='type']" position="after">
+                <!-- Add your fields or attributes here -->
+                <field name="no_history_control"/>
+            </xpath>
+
+            <xpath expr="//field[@name='byproduct_ids']/tree/field[@name='possible_bom_product_template_attribute_value_ids']"
+                   position="before">
+                <field name="no_history_control"/>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

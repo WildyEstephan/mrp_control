@@ -32,24 +32,29 @@ class ProductionHistory(models.TransientModel):
 
     def produce(self):
 
-        if self.line_ids.filtered(lambda r: r.to_produce <= 0):
+        if self.line_ids.filtered(lambda r: r.product_uom_qty <= 0):
             raise ValidationError(_("The quantities must be greater than 0."))
+
+        if self.line_ids.filtered(lambda r: not r.employee_ids):
+            raise ValidationError(_("You must has employee in all lines."))
 
         self.create_control_history()
 
         byproducts = self.line_ids.filtered(lambda r: not r.is_main_product)
         
         for byproduct in byproducts:
-            byproduct.stock_move_id.product_uom_qty = byproduct.product_uom_qty
+            byproduct.stock_move_id.product_uom_qty += byproduct.product_uom_qty
 
-        main_product = self.line_ids.filtered(lambda r: r.is_main_product)[0]
+        if self.line_ids.filtered(lambda r: r.is_main_product):
+            main_product = self.line_ids.filtered(lambda r: r.is_main_product)[0]
 
-        self.production_id.qty_producing = main_product.product_uom_qty
+            self.production_id.qty_producing += main_product.product_uom_qty
 
 
 class ProductionHistoryReady(models.TransientModel):
     _name = 'production.history.ready.wizard'
     _description = 'Production History Ready Wizard'
+    _order = 'is_main_product desc'
 
     product_id = fields.Many2one(
         comodel_name='product.product',

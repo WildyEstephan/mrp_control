@@ -19,7 +19,8 @@ class Production(models.Model):
             if rec.bom_id.no_history_control:
                 rec.use_history_control = False
 
-
+            if rec.state in ('draft', 'cancel', 'done', 'to_close'):
+                rec.use_history_control = False
 
     def create_history(self):
         lines = self._prepare_history_lines()
@@ -44,11 +45,11 @@ class Production(models.Model):
         byproducts = []
         if excluded_products:
             if len(excluded_products) > 1:
-                byproducts = self.move_byproducts_ids.filtered(lambda r: r.id not in excluded_products.ids)
+                byproducts = self.move_byproduct_ids.filtered(lambda r: r.id not in excluded_products.ids)
             else:
-                byproducts = self.move_byproducts_ids.filtered(lambda r: not r.id == excluded_products.id)
+                byproducts = self.move_byproduct_ids.filtered(lambda r: not r.id == excluded_products.id)
         else:
-            byproducts = self.move_byproducts_ids
+            byproducts = self.move_byproduct_ids
 
         return byproducts
 

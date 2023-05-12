@@ -4,6 +4,7 @@ from odoo import api, fields, models, _
 class HistoryQTYControl(models.Model):
     _name = 'history.qty.control'
     _description = 'History QTY Control'
+    _order = 'is_main_product desc'
 
     production_id = fields.Many2one(
         comodel_name='mrp.production',

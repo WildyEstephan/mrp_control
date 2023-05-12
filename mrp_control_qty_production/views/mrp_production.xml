@@ -1,0 +1,45 @@
+<odoo>
+
+    <!-- Inherit Form View to Modify it -->
+    <record id="mrp_production_form_view_inherit_control_production" model="ir.ui.view">
+        <field name="name">mrp_production_form_view_inherit_control_production</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//button[@name='button_mark_done']" position="after">
+                <field name="use_history_control"/>
+                <button name="create_history" 
+                        attrs="{'invisible': [('use_history_control', '=', False)]}" 
+                        string="Produce QTY" type="object" class="oe_highlight"/>
+            </xpath>
+
+            <xpath expr="//field[@name='qty_producing']" position="replace">
+                <field name="qty_producing" class="text-left" readonly="1"/>
+            </xpath>
+
+            <xpath expr="//field[@name='move_byproduct_ids']/tree/field[@name='product_uom_qty']" position="replace">
+                <field name="product_uom_qty" string="To Produce" readonly="1"/>
+            </xpath>
+
+            <xpath expr="//page[@name='miscellaneous']" position="before">
+                <field name="use_history_control" invisible="1"/>
+                <page string="Production Control" name="production_control"
+                      attrs="{'invisible': [('use_history_control', '=', False)]}">
+                    <field name="history_control" readonly="1">
+                        <tree decoration-primary="is_main_product==True">
+                            <field name="product_id"/>
+                            <field name="product_uom_qty"/>
+                            <field name="uom_id"/>
+                            <field name="employee_id"/>
+                            <field name="date"/>
+                            <field name="is_main_product" invisible="1"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>
