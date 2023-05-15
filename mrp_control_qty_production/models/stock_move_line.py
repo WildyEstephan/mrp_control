@@ -2,7 +2,7 @@ from odoo import api, fields, models
 
 
 class StockMoveLine(models.Model):
-    _inherit = 'stock.move.line'
+    _inherit = 'stock.move'
 
     use_history_control = fields.Boolean(
         string='Use history control',
